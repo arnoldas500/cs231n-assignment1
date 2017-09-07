@@ -84,6 +84,103 @@ print (a[[0, 1, 2], [0, 1, 0]])
 print (np.array([a[0, 0], a[1, 1], a[2, 0]]))
 [1 4 5]
 
+# When using integer array indexing, you can reuse the same
+# element from the source array:
+print (a[[0, 0], [1, 1]]) #meaning go to row 0 both times and take element 1 both times
+[2 2]
+# Equivalent to the previous integer array indexing example
+print (np.array([a[0, 1], a[0, 1]]))
+[2 2]
+
+
+Boolean array indexing
+import numpy as np
+
+a = np.array([[1,2], [3, 4], [5, 6]])
+
+bool_idx = (a > 2)  # Find the elements of a that are bigger than 2;
+                    # this returns a numpy array of Booleans of the same
+                    # shape as a, where each slot of bool_idx tells
+                    # whether that element of a is > 2.
+
+print bool_idx
+[[False False]
+ [ True  True]
+ [ True  True]]
+
+* is elementwise multiplication, not matrix multiplication. We instead use the dot function to compute inner products of vectors, to multiply a vector by a matrix, and to multiply matrices.
+x = np.array([[1,2],[3,4]])
+y = np.array([[5,6],[7,8]])
+
+v = np.array([9,10])
+w = np.array([11, 12])
+
+# Inner product of vectors; both produce 219
+print v.dot(w)
+print np.dot(v, w)
+
+Suming of arrays
+x = np.array([[1,2],[3,4]])
+
+print np.sum(x)  # Compute sum of all elements; prints "10"
+print np.sum(x, axis=0)  # Compute sum of each column; prints "[4 6]"
+print np.sum(x, axis=1)  # Compute sum of each row; prints "[3 7]"
+
+transposing a matrix
+print x
+[[1 2]
+ [3 4]]
+
+print x.T
+[[1 3]
+ [2 4]]
+
+Broadcasting
+# We will add the vector v to each row of the matrix x,
+# storing the result in the matrix y
+x = np.array([[1,2,3], [4,5,6], [7,8,9], [10, 11, 12]])
+v = np.array([1, 0, 1])
+y = np.empty_like(x)   # Create an empty matrix with the same shape as x
+
+# Add the vector v to each row of the matrix x with an explicit loop
+for i in range(4):
+    y[i, :] = x[i, :] + v
+
+print y
+[[ 2  2  4]
+ [ 5  5  7]
+ [ 8  8 10]
+ [11 11 13]]
+
+Or an easier and faster way:
+v = np.array([1, 0, 1])
+x = np.array([[1,2,3], [4,5,6], [7,8,9], [10, 11, 12]])
+vv = np.tile(v, (4, 1))  # Stack 4 copies of v on top of each other
+print vv                 # Prints "[[1 0 1]
+                         #          [1 0 1]
+                         #          [1 0 1]
+                         #          [1 0 1]]"
+y = x + vv  # Add x and vv elementwise
+print y
+[[ 2  2  4]
+ [ 5  5  7]
+ [ 8  8 10]
+ [11 11 13]]
+ 
+Even easier way:
+import numpy as np
+
+# We will add the vector v to each row of the matrix x,
+# storing the result in the matrix y
+x = np.array([[1,2,3], [4,5,6], [7,8,9], [10, 11, 12]])
+v = np.array([1, 0, 1])
+y = x + v  # Add v to each row of x using broadcasting
+print y
+[[ 2  2  4]
+ [ 5  5  7]
+ [ 8  8 10]
+ [11 11 13]]
+
 
 
 
